@@ -1,15 +1,15 @@
 from django.conf import settings
 from sampleAppOAuth2.models import Bearer
 from datetime import datetime
-import urllib
 import requests
 import base64
 import json
 import random
 from jose import jws, jwk
-from base64 import urlsafe_b64decode, b64decode
 from sampleAppOAuth2 import getDiscoveryDocument
 import uuid
+# import urllib
+# from base64 import urlsafe_b64decode, b64decode
 
 
 # token can either be an accessToken or a refreshToken
@@ -91,17 +91,17 @@ def createCharge(access_token):
                'Content-Type': 'application/json',
                'Request-Id': str(uuid.uuid4())}
     payload = {
-        "amount": "10.55",
+        "amount": "750.00",
         "capture": False,
         "card": {
             "expYear": "2020",
             "expMonth": "02",
             "address": {
-                "region": "CA",
-                "postalCode": "94086",
-                "streetAddress": "1130 Kifer Rd",
+                "region": "VA",
+                "postalCode": "20176",
+                "streetAddress": "19072 Kipheart Drive",
                 "country": "US",
-                "city": "Sunnyvale"
+                "city": "Leesburg"
             },
             "name": "emulate=0",
             "cvc": "123",

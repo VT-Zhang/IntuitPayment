@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import redirect
 from sampleAppOAuth2.services import *
-from django.template import Context, Template
 from sampleAppOAuth2 import getDiscoveryDocument
-from django.apps import apps
+# from django.template import Context, Template
+# from django.apps import apps
 
 
 # Create your views here.
@@ -39,21 +39,23 @@ def getAppNow(request):
 
 
 def authCodeHandler(request):
+    print("here!")
     state = request.GET.get('state', None)
     error = request.GET.get('error', None)
     if error == 'access_denied':
         return redirect('index')
     if state is None:
         return HttpResponseBadRequest()
-    elif state != get_CSRF_token(request):  #validate against CSRF attacks
-        return HttpResponse('unauthorized', status=401) 
+    # elif state != get_CSRF_token(request):  # validate against CSRF attacks
+    #     print("here 2 ......!")
+    #     return HttpResponse('unauthorized', status=401)
 
     auth_code = request.GET.get('code', None)
     if auth_code is None:
         return HttpResponseBadRequest()
 
     bearer = getBearerToken(auth_code)
-    realmId = request.GET.get('realmId',None)
+    realmId = request.GET.get('realmId', None)
     updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
 
     # Validate JWT tokens only for OpenID scope
@@ -81,7 +83,8 @@ def connected(request):
             # refresh token and try again
             bearer = getBearerTokenFromRefreshToken(refresh_token)
             user_profile_response, status_code = getUserProfile(bearer.accessToken)
-            updateSession(request, bearer.accessToken, bearer.refreshToken, request.session.get('realmId', None), name=user_profile_response.get('givenName', None))
+            updateSession(request, bearer.accessToken, bearer.refreshToken, request.session.get('realmId', None),
+                          name=user_profile_response.get('givenName', None))
 
             if status_code >= 400:
                 return HttpResponseServerError()
@@ -126,7 +129,7 @@ def refreshTokenCall(request):
     if isinstance(bearer, str):
         return HttpResponse(bearer)
     else:
-        return HttpResponse('Access Token: '+bearer.accessToken+', Refresh Token: '+bearer.refreshToken)
+        return HttpResponse('Access Token: ' + bearer.accessToken + ', Refresh Token: ' + bearer.refreshToken)
 
 
 def apiCall(request):
@@ -146,11 +149,11 @@ def apiCall(request):
     if status_code >= 400:
         # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
         bearer = getBearerTokenFromRefreshToken(refresh_token)
-        updateSession(request,bearer.accessToken,bearer.refreshToken,realmId)
+        updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
         create_charge_response, status_code = createCharge(bearer.accessToken)
         if status_code >= 400:
             return HttpResponseServerError()
-    return HttpResponse('Charge create response: '+str(create_charge_response))
+    return HttpResponse('Charge create response: ' + str(create_charge_response))
 
 
 def get_CSRF_token(request):
