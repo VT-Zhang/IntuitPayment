@@ -11,19 +11,19 @@
   </script>
   <script>
     function apiCall() {
-      $("#result").html('Loading...')
+      $("#result").html('Loading...');
       $.get("/sampleappoauth2/apiCall", function(data) {
         $("#result").html(data)
       })
     }
     function revokeCall() {
-      $("#result").html('Loading...')
+      $("#result").html('Loading...');
       $.get("/sampleappoauth2/disconnect", function(data) {
         $("#result").html(data)
       })
     }
     function refreshCall() {
-      $("#result").html('Loading...')
+      $("#result").html('Loading...');
       $.get("/sampleappoauth2/refreshTokenCall", function(data) {
         $("#result").html(JSON.stringify(data, null, 2))
       })

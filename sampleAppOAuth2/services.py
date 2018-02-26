@@ -8,7 +8,6 @@ import random
 from jose import jws, jwk
 from sampleAppOAuth2 import getDiscoveryDocument
 import uuid
-# import urllib
 # from base64 import urlsafe_b64decode, b64decode
 
 
@@ -98,10 +97,10 @@ def createCharge(access_token):
             "expMonth": "02",
             "address": {
                 "region": "VA",
-                "postalCode": "20176",
-                "streetAddress": "19072 Kipheart Drive",
+                "postalCode": "20147",
+                "streetAddress": "45805 University Drive",
                 "country": "US",
-                "city": "Leesburg"
+                "city": "Ashburn"
             },
             "name": "emulate=0",
             "cvc": "123",
