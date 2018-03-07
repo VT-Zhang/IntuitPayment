@@ -2,6 +2,7 @@ from django.conf import settings
 import requests
 from .oauth2config import OAuth2Config
 
+
 def getDiscoveryDocument():
     r = requests.get(settings.DISCOVERY_DOCUMENT)
     if r.status_code >= 400:
@@ -17,4 +18,5 @@ def getDiscoveryDocument():
     
     return discovery_doc
 
-getDiscoveryDocument=getDiscoveryDocument()
+
+getDiscoveryDocument = getDiscoveryDocument()

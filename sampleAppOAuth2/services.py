@@ -90,8 +90,8 @@ def createCharge(access_token):
                'Content-Type': 'application/json',
                'Request-Id': str(uuid.uuid4())}
     payload = {
-        "amount": "750.00",
-        "capture": False,
+        "amount": "666.00",
+        "capture": True,
         "card": {
             "expYear": "2020",
             "expMonth": "02",
@@ -104,7 +104,7 @@ def createCharge(access_token):
             },
             "name": "emulate=0",
             "cvc": "123",
-            "number": "4111111111111111"
+            "number": "5555555555554444"
         },
         "context": {
             "mobile": False,
