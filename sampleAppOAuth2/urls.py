@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^(?i)/apiCall/?$', views.apiCall, name='apiCall'),
     url(r'^(?i)/newInvoice/?$', views.newInvoice, name='newInvoice'),
     url(r'^(?i)/newItem/?$', views.newItem, name='newItem'),
+    url(r'^(?i)/showAllItem/?$', views.allItem, name='allItem'),
     url(r'^(?i)/connected/?$', views.connected, name='connected'),
     url(r'^(?i)/refreshTokenCall/?$', views.refreshTokenCall, name='refreshTokenCall')
 ]

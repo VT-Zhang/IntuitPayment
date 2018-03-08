@@ -28,6 +28,12 @@
         $("#result").html(data)
       })
     }
+    function showAllItem() {
+      $("#result").html('Loading...');
+      $.get("/sampleappoauth2/showAllItem", function(data) {
+        $("#result").html(data)
+      })
+    }
     function revokeCall() {
       $("#result").html('Loading...');
       $.get("/sampleappoauth2/disconnect", function(data) {
@@ -51,7 +57,8 @@
   <div>
     <button onclick="apiCall()">Payments API Call</button>
     <button onclick="newInvoice()">Create A New Invoice</button>
-      <button onclick="newItem()">Create A New Service Item</button>
+    <button onclick="newItem()">Create A New Service Item</button>
+    <button onclick="showAllItem()">Show All Service and Items</button>
     <button onclick="refreshCall()">Refresh Token Call</button>
     <button onclick="revokeCall()">Revoke Token Call</button>
     <br><br>
