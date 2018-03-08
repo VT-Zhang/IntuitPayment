@@ -182,6 +182,30 @@ def newInvoice(request):
     return HttpResponse('Charge create response: ' + str(create_charge_response))
 
 
+def newItem(request):
+    access_token = request.session.get('accessToken', None)
+    if access_token is None:
+        return HttpResponse('Your Bearer token has expired, please initiate C2QB flow again')
+
+    realmId = request.session['realmId']
+    if realmId is None:
+        return HttpResponse('No realm ID. QBO calls only work if the payment scope was passed!')
+
+    refresh_token = request.session['refreshToken']
+    create_charge_response, status_code = createItem(access_token, realmId)
+    print(create_charge_response)
+    print(status_code)
+
+    if status_code >= 400:
+        # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
+        bearer = getBearerTokenFromRefreshToken(refresh_token)
+        updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
+        create_charge_response, status_code = createItem(bearer.accessToken, realmId)
+        if status_code >= 400:
+            return HttpResponseServerError()
+    return HttpResponse('Charge create response: ' + str(create_charge_response))
+
+
 def get_CSRF_token(request):
     token = request.session.get('csrfToken', None)
     if token is None:

@@ -153,6 +153,42 @@ def createInvoice(access_token, companyid):
     response = json.loads(r.text)
     return response, status_code
 
+
+def createItem(access_token, companyid):
+    route = '/company/' + companyid + '/item'
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    item = {
+            "Name": "DNA Sequencing Service",
+            "IncomeAccountRef": {
+                "value": "79",
+                "name": "Sales of Product Income"
+            },
+            "ExpenseAccountRef": {
+                "value": "80",
+                "name": "Cost of Goods Sold"
+            },
+            "AssetAccountRef": {
+                "value": "81",
+                "name": "Inventory Asset"
+            },
+            "Type": "Inventory",
+            "TrackQtyOnHand": True,
+            "QtyOnHand": 10,
+            "InvStartDate": "2015-01-01"
+        }
+    json_str = json.dumps(item)
+    json_obj = json.loads(json_str)
+    print(json_obj)
+    r = requests.post(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers, json=json_obj)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
 """
     The validation steps can be found at ours docs at developer.intuit.com
 """
