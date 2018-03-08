@@ -143,7 +143,7 @@ OPENID_SCOPES = ['com.intuit.quickbooks.accounting', 'com.intuit.quickbooks.paym
 GET_APP_SCOPES = ['com.intuit.quickbooks.accounting', 'com.intuit.quickbooks.payment', 'openid',
                   'profile', 'email', 'phone', 'address']
 # SANDBOX_PAYMENT_BASEURL = 'https://sandbox.api.intuit.com'
-SANDBOX_PAYMENT_BASEURL = 'https://sandbox-quickbooks.api.intuit.com/'
+SANDBOX_PAYMENT_BASEURL = 'https://sandbox-quickbooks.api.intuit.com/v3'
 # Prod_payment_url= 'https://api.intuit.com'
 
 SANDBOX_PROFILE_URL = 'https://sandbox-accounts.platform.intuit.com/v1/openid_connect/userinfo'
