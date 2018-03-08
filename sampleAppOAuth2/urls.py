@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^(?i)/authCodeHandler/?$', views.authCodeHandler, name='authCodeHandler'),
     url(r'^(?i)/disconnect/?$', views.disconnect, name='disconnect'),
     url(r'^(?i)/apiCall/?$', views.apiCall, name='apiCall'),
+    url(r'^(?i)/newInvoice/?$', views.newInvoice, name='newInvoice'),
     url(r'^(?i)/connected/?$', views.connected, name='connected'),
     url(r'^(?i)/refreshTokenCall/?$', views.refreshTokenCall, name='refreshTokenCall')
 ]

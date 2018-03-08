@@ -16,6 +16,12 @@
         $("#result").html(data)
       })
     }
+    function newInvoice() {
+      $("#result").html('Loading...');
+      $.get("/sampleappoauth2/newInvoice", function(data) {
+        $("#result").html(data)
+      })
+    }
     function revokeCall() {
       $("#result").html('Loading...');
       $.get("/sampleappoauth2/disconnect", function(data) {
@@ -38,6 +44,7 @@
   <p>Would you like to make a sample API call?</p>
   <div>
     <button onclick="apiCall()">Payments API Call</button>
+    <button onclick="newInvoice()">Create A New Invoice</button>
     <button onclick="refreshCall()">Refresh Token Call</button>
     <button onclick="revokeCall()">Revoke Token Call</button>
     <br><br>

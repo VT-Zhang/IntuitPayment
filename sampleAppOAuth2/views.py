@@ -15,7 +15,8 @@ def index(request):
 
 def connectToQuickbooks(request):
     url = getDiscoveryDocument.auth_endpoint
-    params = {'scope': settings.PAYMENTS_SCOPE, 'redirect_uri': settings.REDIRECT_URI,
+    scope = ' '.join(settings.PAYMENTS_SCOPE)
+    params = {'scope': scope, 'redirect_uri': settings.REDIRECT_URI,
               'response_type': 'code', 'state': get_CSRF_token(request), 'client_id': settings.CLIENT_ID}
     url += '?' + urllib.parse.urlencode(params)
     return redirect(url)
@@ -152,6 +153,30 @@ def apiCall(request):
         bearer = getBearerTokenFromRefreshToken(refresh_token)
         updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
         create_charge_response, status_code = createCharge(bearer.accessToken)
+        if status_code >= 400:
+            return HttpResponseServerError()
+    return HttpResponse('Charge create response: ' + str(create_charge_response))
+
+
+def newInvoice(request):
+    access_token = request.session.get('accessToken', None)
+    if access_token is None:
+        return HttpResponse('Your Bearer token has expired, please initiate C2QB flow again')
+
+    realmId = request.session['realmId']
+    if realmId is None:
+        return HttpResponse('No realm ID. QBO calls only work if the payment scope was passed!')
+
+    refresh_token = request.session['refreshToken']
+    create_charge_response, status_code = createInvoice(access_token, realmId)
+    print(create_charge_response)
+    print(status_code)
+
+    if status_code >= 400:
+        # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
+        bearer = getBearerTokenFromRefreshToken(refresh_token)
+        updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
+        create_charge_response, status_code = createInvoice(bearer.accessToken, realmId)
         if status_code >= 400:
             return HttpResponseServerError()
     return HttpResponse('Charge create response: ' + str(create_charge_response))
