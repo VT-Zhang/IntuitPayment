@@ -51,13 +51,13 @@ def getBearerToken(auth_code):
                   bearer_raw['refresh_token'], bearer_raw['expires_in'], idToken=idToken)
 
 
-def getBearerTokenFromRefreshToken(refresh_Token):
+def getBearerTokenFromRefreshToken(refresh_token):
     token_endpoint = getDiscoveryDocument.token_endpoint
     auth_header = 'Basic ' + stringToBase64(settings.CLIENT_ID + ':' + settings.CLIENT_SECRET)
     headers = {'Accept': 'application/json', 'content-type': 'application/x-www-form-urlencoded',
                'Authorization': auth_header}
     payload = {
-        'refresh_token': refresh_Token,
+        'refresh_token': refresh_token,
         'grant_type': 'refresh_token'
     }
     r = requests.post(token_endpoint, data=payload, headers=headers)
@@ -82,38 +82,52 @@ def getUserProfile(access_token):
     return response, status_code
 
 
-def createCharge(access_token, companyid):
-    # route = '/quickbooks/v4/payments/charges'
+def createCharge(access_token):
+    route = '/quickbooks/v4/payments/charges'
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    payload = {
+        "amount": "500.00",
+        "capture": True,
+        "card": {
+            "expYear": "2020",
+            "expMonth": "02",
+            "address": {
+                "region": "VA",
+                "postalCode": "20147",
+                "streetAddress": "45805 University Drive",
+                "country": "US",
+                "city": "Ashburn"
+            },
+            "name": "emulate=0",
+            "cvc": "123",
+            "number": "5555555555554444"
+        },
+        "context": {
+            "mobile": False,
+            "isEcommerce": True
+        },
+        "currency": "USD"
+    }
+    json_str = json.dumps(payload)
+    json_obj = json.loads(json_str)
+    print(json_obj)
+    r = requests.post(settings.SANDBOX_PAYMENT_BASEURL + route, headers=headers, json=json_obj)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
+def createInvoice(access_token, companyid):
     route = '/company/' + companyid + '/invoice'
     auth_header = 'Bearer ' + access_token
     headers = {'Authorization': auth_header,
                'Accept': 'application/json',
                'Content-Type': 'application/json',
                'Request-Id': str(uuid.uuid4())}
-    # payload = {
-    #     "amount": "666.00",
-    #     "capture": True,
-    #     "card": {
-    #         "expYear": "2020",
-    #         "expMonth": "02",
-    #         "address": {
-    #             "region": "VA",
-    #             "postalCode": "20147",
-    #             "streetAddress": "45805 University Drive",
-    #             "country": "US",
-    #             "city": "Ashburn"
-    #         },
-    #         "name": "emulate=0",
-    #         "cvc": "123",
-    #         "number": "5555555555554444"
-    #     },
-    #     "context": {
-    #         "mobile": False,
-    #         "isEcommerce": True
-    #     },
-    #     "currency": "USD"
-    # }
-
     invoice = {
         "Line": [
             {
@@ -134,11 +148,10 @@ def createCharge(access_token, companyid):
     json_str = json.dumps(invoice)
     json_obj = json.loads(json_str)
     print(json_obj)
-    r = requests.post(settings.SANDBOX_PAYMENT_BASEURL + route, headers=headers, json=json_obj)
+    r = requests.post(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers, json=json_obj)
     status_code = r.status_code
     response = json.loads(r.text)
     return response, status_code
-
 
 """
     The validation steps can be found at ours docs at developer.intuit.com

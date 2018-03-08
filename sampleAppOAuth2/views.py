@@ -109,9 +109,9 @@ def disconnect(request):
     refresh_token = request.session.get('refreshToken', None)
 
     revoke_response = ''
-    if not access_token is None:
+    if access_token is not None:
         revoke_response = revokeToken(access_token)
-    elif not refresh_token is None:
+    elif refresh_token is not None:
         revoke_response = revokeToken(refresh_token)
     else:
         return HttpResponse('No accessToken or refreshToken found, Please connect again')
@@ -143,7 +143,7 @@ def apiCall(request):
         return HttpResponse('No realm ID. QBO calls only work if the payment scope was passed!')
 
     refresh_token = request.session['refreshToken']
-    create_charge_response, status_code = createCharge(access_token, realmId)
+    create_charge_response, status_code = createCharge(access_token)
     print(create_charge_response)
     print(status_code)
 
@@ -151,7 +151,7 @@ def apiCall(request):
         # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
         bearer = getBearerTokenFromRefreshToken(refresh_token)
         updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
-        create_charge_response, status_code = createCharge(bearer.accessToken, realmId)
+        create_charge_response, status_code = createCharge(bearer.accessToken)
         if status_code >= 400:
             return HttpResponseServerError()
     return HttpResponse('Charge create response: ' + str(create_charge_response))
