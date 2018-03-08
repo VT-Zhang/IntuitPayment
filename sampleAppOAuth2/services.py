@@ -82,37 +82,56 @@ def getUserProfile(access_token):
     return response, status_code
 
 
-def createCharge(access_token):
-    route = '/quickbooks/v4/payments/charges'
+def createCharge(access_token, companyid):
+    # route = '/quickbooks/v4/payments/charges'
+    route = '/company/' + companyid + '/invoice'
     auth_header = 'Bearer ' + access_token
     headers = {'Authorization': auth_header,
                'Accept': 'application/json',
                'Content-Type': 'application/json',
                'Request-Id': str(uuid.uuid4())}
-    payload = {
-        "amount": "666.00",
-        "capture": True,
-        "card": {
-            "expYear": "2020",
-            "expMonth": "02",
-            "address": {
-                "region": "VA",
-                "postalCode": "20147",
-                "streetAddress": "45805 University Drive",
-                "country": "US",
-                "city": "Ashburn"
-            },
-            "name": "emulate=0",
-            "cvc": "123",
-            "number": "5555555555554444"
-        },
-        "context": {
-            "mobile": False,
-            "isEcommerce": True
-        },
-        "currency": "USD"
+    # payload = {
+    #     "amount": "666.00",
+    #     "capture": True,
+    #     "card": {
+    #         "expYear": "2020",
+    #         "expMonth": "02",
+    #         "address": {
+    #             "region": "VA",
+    #             "postalCode": "20147",
+    #             "streetAddress": "45805 University Drive",
+    #             "country": "US",
+    #             "city": "Ashburn"
+    #         },
+    #         "name": "emulate=0",
+    #         "cvc": "123",
+    #         "number": "5555555555554444"
+    #     },
+    #     "context": {
+    #         "mobile": False,
+    #         "isEcommerce": True
+    #     },
+    #     "currency": "USD"
+    # }
+
+    invoice = {
+        "Line": [
+            {
+                "Amount": 999.00,
+                "DetailType": "SalesItemLineDetail",
+                "SalesItemLineDetail": {
+                    "ItemRef": {
+                        "value": "1",
+                        "name": "Services"
+                    }
+                }
+            }
+        ],
+        "CustomerRef": {
+            "value": "60"
+        }
     }
-    json_str = json.dumps(payload)
+    json_str = json.dumps(invoice)
     json_obj = json.loads(json_str)
     print(json_obj)
     r = requests.post(settings.SANDBOX_PAYMENT_BASEURL + route, headers=headers, json=json_obj)

@@ -136,10 +136,14 @@ DISCOVERY_DOCUMENT = 'https://developer.api.intuit.com/.well-known/openid_sandbo
 CLIENT_ID = 'Q0qS4dsQPCRkWSaFpYiamw6Fe9iANJNUfJRC2gCYfaG6pPV3N8'
 CLIENT_SECRET = 'Cw6wUwuBWugqea4wnW5bqu0XVh61Kxia9ztmJzo6'
 REDIRECT_URI = 'http://localhost:8000/sampleappoauth2/authCodeHandler'
-PAYMENTS_SCOPE = 'com.intuit.quickbooks.payment'
-OPENID_SCOPES = ['openid', 'profile', 'email', ' phone', 'address']
-GET_APP_SCOPES = ['com.intuit.quickbooks.payment', 'openid', 'profile', 'email', 'phone', 'address']
-SANDBOX_PAYMENT_BASEURL = 'https://sandbox.api.intuit.com'
+# PAYMENTS_SCOPE = 'com.intuit.quickbooks.payment'
+PAYMENTS_SCOPE = 'com.intuit.quickbooks.accounting'
+OPENID_SCOPES = ['com.intuit.quickbooks.accounting', 'com.intuit.quickbooks.payment', 'openid',
+                 'profile', 'email', 'phone', 'address']
+GET_APP_SCOPES = ['com.intuit.quickbooks.accounting', 'com.intuit.quickbooks.payment', 'openid',
+                  'profile', 'email', 'phone', 'address']
+# SANDBOX_PAYMENT_BASEURL = 'https://sandbox.api.intuit.com'
+SANDBOX_PAYMENT_BASEURL = 'https://sandbox-quickbooks.api.intuit.com/'
 # Prod_payment_url= 'https://api.intuit.com'
 
 SANDBOX_PROFILE_URL = 'https://sandbox-accounts.platform.intuit.com/v1/openid_connect/userinfo'

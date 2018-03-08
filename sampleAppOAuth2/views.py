@@ -143,7 +143,7 @@ def apiCall(request):
         return HttpResponse('No realm ID. QBO calls only work if the payment scope was passed!')
 
     refresh_token = request.session['refreshToken']
-    create_charge_response, status_code = createCharge(access_token)
+    create_charge_response, status_code = createCharge(access_token, realmId)
     print(create_charge_response)
     print(status_code)
 
@@ -151,7 +151,7 @@ def apiCall(request):
         # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
         bearer = getBearerTokenFromRefreshToken(refresh_token)
         updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
-        create_charge_response, status_code = createCharge(bearer.accessToken)
+        create_charge_response, status_code = createCharge(bearer.accessToken, realmId)
         if status_code >= 400:
             return HttpResponseServerError()
     return HttpResponse('Charge create response: ' + str(create_charge_response))
