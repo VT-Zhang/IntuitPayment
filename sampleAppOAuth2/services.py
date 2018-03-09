@@ -190,6 +190,46 @@ def createItem(access_token, companyid):
     return response, status_code
 
 
+def createCustomer(access_token, companyid):
+    route = '/company/' + companyid + '/customer'
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    customer = {
+        "BillAddr": {
+            "Line1": "100 Washington Ave",
+            "City": "Rockville",
+            "Country": "USA",
+            "CountrySubDivisionCode": "MD",
+            "PostalCode": "20850"
+        },
+        "Notes": "Here are other details.",
+        "Title": "Mr",
+        "GivenName": "Benjamin",
+        "MiddleName": "",
+        "FamilyName": "Franklin",
+        "Suffix": "",
+        "FullyQualifiedName": "",
+        "CompanyName": "",
+        "DisplayName": "",
+        "PrimaryPhone": {
+            "FreeFormNumber": "(301)585-2018"
+        },
+        "PrimaryEmailAddr": {
+            "Address": "bfranklin@usa.com"
+        }
+    }
+    json_str = json.dumps(customer)
+    json_obj = json.loads(json_str)
+    print(json_obj)
+    r = requests.post(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers, json=json_obj)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
 def showInvoice(access_token, companyid, invoiceid):
     route = '/company/' + companyid + "/invoice/" + invoiceid
     auth_header = 'Bearer ' + access_token
