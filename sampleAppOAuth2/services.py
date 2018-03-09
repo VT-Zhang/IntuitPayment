@@ -190,8 +190,34 @@ def createItem(access_token, companyid):
     return response, status_code
 
 
+def showInvoice(access_token, companyid, invoiceid):
+    route = '/company/' + companyid + "/invoice/" + invoiceid
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    r = requests.get(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
 def showAllItem(access_token, companyid):
     route = '/company/' + companyid + "/query?query=SELECT * FROM Item"
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    r = requests.get(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
+def showAllCustomer(access_token, companyid):
+    route = '/company/' + companyid + "/query?query=SELECT * FROM Customer"
     auth_header = 'Bearer ' + access_token
     headers = {'Authorization': auth_header,
                'Accept': 'application/json',
