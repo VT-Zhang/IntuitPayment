@@ -245,7 +245,7 @@ def oneCustomer(request):
     if realmId is None:
         return HttpResponse('No realm ID. QBO calls only work if the payment scope was passed!')
 
-    customerid = 60
+    customerid = "60"
 
     refresh_token = request.session['refreshToken']
     show_customer_response, status_code = showCustomer(access_token, realmId, customerid)

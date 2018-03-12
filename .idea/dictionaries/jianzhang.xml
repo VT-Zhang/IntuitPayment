@@ -5,6 +5,7 @@
       <w>baseurl</w>
       <w>companyid</w>
       <w>csrf</w>
+      <w>customerid</w>
       <w>ecommerce</w>
       <w>invoiceid</w>
       <w>kipheart</w>

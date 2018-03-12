@@ -208,7 +208,7 @@ def createCustomer(access_token, companyid):
 
 
 def showCustomer(access_token, companyid, customerid):
-    route = '/company/' + companyid + "/invoice/" + customerid
+    route = '/company/' + companyid + "/customer/" + customerid
     auth_header = 'Bearer ' + access_token
     headers = {'Authorization': auth_header,
                'Accept': 'application/json',
