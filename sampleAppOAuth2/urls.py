@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^(?i)/newInvoice/?$', views.newInvoice, name='newInvoice'),
     url(r'^(?i)/oneInvoice/?$', views.newInvoice, name='oneInvoice'),
     url(r'^(?i)/newCustomer/?$', views.newCustomer, name='newCustomer'),
+    url(r'^(?i)/oneCustomer/?$', views.newCustomer, name='oneCustomer'),
     url(r'^(?i)/newItem/?$', views.newItem, name='newItem'),
     url(r'^(?i)/showAllItem/?$', views.allItem, name='allItem'),
     url(r'^(?i)/showAllCustomer/?$', views.allCustomer, name='allCustomer'),

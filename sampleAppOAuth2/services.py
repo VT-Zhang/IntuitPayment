@@ -154,37 +154,14 @@ def createInvoice(access_token, companyid):
     return response, status_code
 
 
-def createItem(access_token, companyid):
-    route = '/company/' + companyid + '/item'
+def showInvoice(access_token, companyid, invoiceid):
+    route = '/company/' + companyid + "/invoice/" + invoiceid
     auth_header = 'Bearer ' + access_token
     headers = {'Authorization': auth_header,
                'Accept': 'application/json',
                'Content-Type': 'application/json',
                'Request-Id': str(uuid.uuid4())}
-    item = {
-            "Name": "RNA Sequencing Service",
-            "UnitPrice": 1000,
-            "IncomeAccountRef": {
-                "value": "79",
-                "name": "Sales of Product Income"
-            },
-            "ExpenseAccountRef": {
-                "value": "80",
-                "name": "Cost of Goods Sold"
-            },
-            "AssetAccountRef": {
-                "value": "81",
-                "name": "Inventory Asset"
-            },
-            "Type": "Inventory",
-            "TrackQtyOnHand": True,
-            "QtyOnHand": 10,
-            "InvStartDate": "2015-01-01"
-        }
-    json_str = json.dumps(item)
-    json_obj = json.loads(json_str)
-    print(json_obj)
-    r = requests.post(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers, json=json_obj)
+    r = requests.get(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers)
     status_code = r.status_code
     response = json.loads(r.text)
     return response, status_code
@@ -230,21 +207,8 @@ def createCustomer(access_token, companyid):
     return response, status_code
 
 
-def showInvoice(access_token, companyid, invoiceid):
-    route = '/company/' + companyid + "/invoice/" + invoiceid
-    auth_header = 'Bearer ' + access_token
-    headers = {'Authorization': auth_header,
-               'Accept': 'application/json',
-               'Content-Type': 'application/json',
-               'Request-Id': str(uuid.uuid4())}
-    r = requests.get(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers)
-    status_code = r.status_code
-    response = json.loads(r.text)
-    return response, status_code
-
-
-def showAllItem(access_token, companyid):
-    route = '/company/' + companyid + "/query?query=SELECT * FROM Item"
+def showCustomer(access_token, companyid, customerid):
+    route = '/company/' + companyid + "/invoice/" + customerid
     auth_header = 'Bearer ' + access_token
     headers = {'Authorization': auth_header,
                'Accept': 'application/json',
@@ -267,6 +231,58 @@ def showAllCustomer(access_token, companyid):
     status_code = r.status_code
     response = json.loads(r.text)
     return response, status_code
+
+
+def createItem(access_token, companyid):
+    route = '/company/' + companyid + '/item'
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    item = {
+            "Name": "RNA Sequencing Service",
+            "UnitPrice": 1000,
+            "IncomeAccountRef": {
+                "value": "79",
+                "name": "Sales of Product Income"
+            },
+            "ExpenseAccountRef": {
+                "value": "80",
+                "name": "Cost of Goods Sold"
+            },
+            "AssetAccountRef": {
+                "value": "81",
+                "name": "Inventory Asset"
+            },
+            "Type": "Inventory",
+            "TrackQtyOnHand": True,
+            "QtyOnHand": 10,
+            "InvStartDate": "2015-01-01"
+        }
+    json_str = json.dumps(item)
+    json_obj = json.loads(json_str)
+    print(json_obj)
+    r = requests.post(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers, json=json_obj)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
+def showAllItem(access_token, companyid):
+    route = '/company/' + companyid + "/query?query=SELECT * FROM Item"
+    auth_header = 'Bearer ' + access_token
+    headers = {'Authorization': auth_header,
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+               'Request-Id': str(uuid.uuid4())}
+    r = requests.get(settings.SANDBOX_ACCOUNTING_BASEURL + route, headers=headers)
+    status_code = r.status_code
+    response = json.loads(r.text)
+    return response, status_code
+
+
+
 
 
 """
