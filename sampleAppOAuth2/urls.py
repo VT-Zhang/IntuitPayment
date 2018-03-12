@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^(?i)/newCustomer/?$', views.newCustomer, name='newCustomer'),
     url(r'^(?i)/oneCustomer/?$', views.oneCustomer, name='oneCustomer'),
     url(r'^(?i)/newItem/?$', views.newItem, name='newItem'),
+    url(r'^(?i)/oneItem/?$', views.oneItem, name='onwItem'),
     url(r'^(?i)/showAllItem/?$', views.allItem, name='allItem'),
     url(r'^(?i)/showAllCustomer/?$', views.allCustomer, name='allCustomer'),
     url(r'^(?i)/connected/?$', views.connected, name='connected'),

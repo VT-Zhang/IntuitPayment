@@ -336,6 +336,30 @@ def allItem(request):
     return HttpResponse('Query Item response: ' + str(show_all_item_response))
 
 
+def oneItem(request):
+    access_token = request.session.get('accessToken', None)
+    if access_token is None:
+        return HttpResponse('Your Bearer token has expired, please initiate C2QB flow again')
+
+    realmId = request.session['realmId']
+    if realmId is None:
+        return HttpResponse('No realm ID. QBO calls only work if the payment scope was passed!')
+
+    itemid = "1"
+
+    refresh_token = request.session['refreshToken']
+    show_item_response, status_code = showItem(access_token, realmId, itemid)
+    print(show_item_response)
+    print(status_code)
+
+    if status_code >= 400:
+        # if call to QBO doesn't succeed then get a new bearer token from refresh token and try again
+        bearer = getBearerTokenFromRefreshToken(refresh_token)
+        updateSession(request, bearer.accessToken, bearer.refreshToken, realmId)
+        create_charge_response, status_code = showItem(bearer.accessToken, realmId)
+        if status_code >= 400:
+            return HttpResponseServerError()
+    return HttpResponse('Query Item response: ' + str(show_item_response))
 
 
 
